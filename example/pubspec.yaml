@@ -1,0 +1,25 @@
+name: wifi_controller_plugin_example
+description: Demonstrates how to use the wifi_controller_plugin plugin.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bloc: ^6.0.3
+  flutter_bloc: ^6.0.5
+  cupertino_icons: ^1.0.0
+
+  wifi_controller_plugin:
+    path: ../
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
