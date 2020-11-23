@@ -19,11 +19,11 @@ class EnableWifi extends Event {}
 
 class RetrieveHomeNetworkSsid extends Event {}
 
-class ConnectToHub extends Event {
+class SetupLiveLedsHub extends Event {
 
   final String ssid;
   final String password;
-  ConnectToHub(this.ssid, this.password);
+  SetupLiveLedsHub(this.ssid, this.password);
 }
 
 //

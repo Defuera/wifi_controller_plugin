@@ -37,10 +37,9 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "ru.justd.wifi_controller_plugin_example"
         minSdkVersion 16
-        targetSdkVersion 28 //If update to 29 enable wifi automatically will not work
+        targetSdkVersion 29 //If update to 29 enable wifi automatically will not work
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

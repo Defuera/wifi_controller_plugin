@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:wifi_controller_plugin/wifi_controller_plugin.dart';
-import 'package:wifi_controller_plugin_example/model.dart';
+import 'package:wifi_controller_plugin_example/app_model.dart';
 
 // 1. check if enabled
 // 1.1 if not enabled enable
@@ -24,8 +24,8 @@ class MyAppBloc extends Bloc<Event, MyAppState> {
     } else if (event is RetrieveHomeNetworkSsid) {
       final ssid = await WifiControllerPlugin.wifiSsid;
       yield MyAppState.provideWifiPassword(ssid: ssid);
-    } else if (event is ConnectToHub) {
-
+    } else if (event is SetupLiveLedsHub) {
+      await setupLiveLedsHub(event.ssid, event.password);
     }
     // else if (event is DisableWifi) {
     //   yield await _disableWifi();
@@ -154,6 +154,15 @@ class MyAppBloc extends Bloc<Event, MyAppState> {
     //   list.add(WifiEntryModel(element, isRegistered));
     // });
     return list;
+  }
+
+  Future<void> setupLiveLedsHub(String ssid, String password) async {
+    password = '1LoveDenis';
+
+    final result = await WifiControllerPlugin.connectToHubWifi("liveleds", "liveleds");
+
+    //todo check if success
+    //todo talk to hub via API
   }
 
 //   // 1. check if enabled
