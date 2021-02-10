@@ -4,8 +4,9 @@ import 'package:flutter/services.dart';
 
 const _METHOD_CALL_IS_ENABLED = "METHOD_CALL_IS_ENABLED";
 const _METHOD_GET_WIFI_SSID = "METHOD_GET_WIFI_SSID";
+const _METHOD_SOCKET_REQUEST = "METHOD_SOCKET_REQUEST";
 
-class WifiControllerPlugin {
+class WifiControllerPlugin { //todo rename to smthng like NetworkHacksPlugin
   static const MethodChannel _channel = const MethodChannel('wifi_controller_plugin');
 
   /// Return true or false when status is retrieved or null when status is not available on device
@@ -18,6 +19,13 @@ class WifiControllerPlugin {
   static Future<String> get wifiSsid async {
     return ((await _channel.invokeMethod(_METHOD_GET_WIFI_SSID)) as String)?.replaceAll('"', '');
   }
+
+  /// Returns current ssid name or null if failed to retrieve
+  static Future<String> socketRequest(String method, String url, {String body}) async {
+    return ((await _channel.invokeMethod(_METHOD_SOCKET_REQUEST, [method, url, body])) as String);
+  }
+
+
 
   /// Loops until wifi is enabled
   /// @param maxTime - loop for max milliseconds before stop trying

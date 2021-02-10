@@ -37,7 +37,11 @@ class _MyAppState extends State<MyApp> {
                         RaisedButton(
                           child: Text('Reload'),
                           onPressed: () => _bloc.add(OnReloadState()),
-                        )
+                        ),
+                        RaisedButton(
+                          child: Text('Test socket connection'),
+                          onPressed: () => _bloc.add(TestSocketConnection()),
+                        ),
                       ],
                     ),
                   ),

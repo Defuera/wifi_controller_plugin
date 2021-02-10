@@ -4,6 +4,8 @@ class Init extends Event {}
 
 class OnReloadState extends Event {}
 
+class TestSocketConnection extends Event {}
+
 class MyAppState {
   final bool isLoading;
   final bool isWifiEbabled;

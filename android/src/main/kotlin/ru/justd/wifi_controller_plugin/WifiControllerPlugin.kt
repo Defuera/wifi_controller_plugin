@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.util.Log
@@ -18,12 +19,16 @@ import io.flutter.plugin.common.MethodChannel.Result
 private const val METHOD_CALL_IS_ENABLED = "METHOD_CALL_IS_ENABLED"
 private const val METHOD_GET_WIFI_SSID = "METHOD_GET_WIFI_SSID"
 
+private const val METHOD_SOCKET_REQUEST = "METHOD_SOCKET_REQUEST"
+
 class WifiControllerPlugin : FlutterPlugin, MethodCallHandler {
 
     private var activity: Activity? = null
     private lateinit var context: Context
     private lateinit var channel: MethodChannel
     private lateinit var wifiManager: WifiManager
+    private lateinit var connectivityManager: ConnectivityManager
+    private val socketNetworkClient: SocketNetworkClient by lazy { SocketNetworkClient(connectivityManager) }
 
     @SuppressLint("WifiManagerPotentialLeak")
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -32,6 +37,7 @@ class WifiControllerPlugin : FlutterPlugin, MethodCallHandler {
 
         context = flutterPluginBinding.applicationContext
         wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -42,6 +48,7 @@ class WifiControllerPlugin : FlutterPlugin, MethodCallHandler {
         when (call.method) {
             METHOD_CALL_IS_ENABLED -> handleIsWifiEnabled(result)
             METHOD_GET_WIFI_SSID -> handleGetWifiSsid(result)
+            METHOD_SOCKET_REQUEST -> socketNetworkClient.sendRequest(call, result)
             else -> result.notImplemented()
         }
 
