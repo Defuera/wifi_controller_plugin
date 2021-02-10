@@ -55,8 +55,11 @@ class WifiControllerPlugin : FlutterPlugin, MethodCallHandler {
 
     private fun handleGetWifiSsid(result: Result) {
         checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-        Log.i("WifiControllerPlugin", "[handleGetWifiSsid] ssid: ${wifiManager.connectionInfo.ssid}")
-        result.success(wifiManager.connectionInfo.ssid)
+        val ssid = wifiManager.connectionInfo.ssid
+        val resolvedSsid = if (ssid == "<unknown ssid>") null else ssid
+
+        Log.i("WifiControllerPlugin", "[handleGetWifiSsid] ssid: $resolvedSsid")
+        result.success(resolvedSsid)
     }
 
 
