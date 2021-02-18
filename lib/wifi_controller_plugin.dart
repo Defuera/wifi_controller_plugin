@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:wifi_controller_plugin/errors.dart';
 
 const _METHOD_CALL_IS_ENABLED = "METHOD_CALL_IS_ENABLED";
 const _METHOD_GET_WIFI_SSID = "METHOD_GET_WIFI_SSID";
+
+const _RESULT_ERROR = "PERMISSION_IS_MISSING";
 
 class WifiControllerPlugin {
   static const MethodChannel _channel = const MethodChannel('wifi_controller_plugin');
@@ -16,7 +19,15 @@ class WifiControllerPlugin {
 
   /// Returns current ssid name or null if failed to retrieve
   static Future<String> get wifiSsid async {
-    return ((await _channel.invokeMethod(_METHOD_GET_WIFI_SSID)) as String)?.replaceAll('"', '');
+    try {
+      return ((await _channel.invokeMethod(_METHOD_GET_WIFI_SSID)) as String)?.replaceAll('"', '');
+    } on PlatformException catch (error) {
+      if (error.code == _RESULT_ERROR) {
+        throw PermissionMissing(error.details);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   /// Loops until wifi is enabled
@@ -42,5 +53,4 @@ class WifiControllerPlugin {
       await loopUntilWifiIsConnectedToAny(maxTime: maxTime, periodicity: periodicity);
     }
   }
-
 }
